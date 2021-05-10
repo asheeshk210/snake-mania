@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Snake Game</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-image: url('images/wp2409705.jpg');
+            background-repeat: no-repeat;
+            /* background-size: cover; */
+            background-position: center center;
+            background-attachment: fixed;
+            /* background: url("images/wp2409705.jpg");
+            min-height: 98vh;
+            background-repeat: no-repeat;*/
+            background-size: 100vw 100vh;
+        }
+        
+        .sap {
+            display: none;
+        }
+        
+        h1 {
+            margin-left: 50%;
+            transform: translate(-50%);
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            width: fit-content;
+        }
+        
+        canvas {
+            box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            display: flex;
+            margin-left: 50%;
+            transform: translate(-50%);
+        }
+        
+        .fimg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .controls {
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-left: 80%;
+            margin-top: 20%;
+        }
+        
+        #up:hover {
+            fill: rgb(255, 0, 0);
+        }
+        
+        .down:hover {
+            fill: rgb(255, 0, 0);
+        }
+        
+        .left:hover {
+            fill: rgb(255, 0, 0);
+        }
+        
+        .right:hover {
+            fill: rgb(255, 0, 0);
+        }
+        
+        .replay:hover {
+            stroke: black;
+            stroke-width: 2px;
+        }
+        
+        @media only screen and (max-width:600px) {
+            body {
+                background-size: 100% 100%;
+                overflow-x: hidden;
+            }
+            canvas {
+                width: 300px;
+                height: 300px;
+                margin-left: 50%;
+                transform: translate(-35%);
+            }
+            #svg {
+                width: 250%;
+                height: 250%;
+            }
+            .controls {
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                margin-left: 50%;
+                transform: translate(-10%, 150%);
+            }
+        }
+        
+        @media only screen and (max-width:540px) {
+            canvas {
+                width: 300px;
+                height: 300px;
+                margin-left: 50%;
+                transform: translate(-35%);
+            }
+            #svg {
+                width: 250%;
+                height: 250%;
+            }
+            .controls {
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                margin-left: 50%;
+                transform: translate(-10%, 190%);
+            }
+        }
+        
+        @media only screen and (max-width:470px) {
+            canvas {
+                width: 300px;
+                height: 300px;
+                margin-left: 50%;
+                transform: translate(-30%);
+            }
+            #svg {
+                width: 250%;
+                height: 250%;
+            }
+            .controls {
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                margin-left: 50%;
+                transform: translate(-10%, 230%);
+            }
+        }
+        
+        @media only screen and (max-width:400px) {
+            body {
+                background-image: url('wp240970565.jpg');
+            }
+            h1 {
+                font-size: 200%;
+                margin-left: 30%;
+                transform: translate(-30%);
+            }
+            canvas {
+                z-index: 1;
+                width: 80%;
+                height: 50%;
+                margin-left: 50%;
+                transform: translate(-50%);
+            }
+            #svg {
+                z-index: 2;
+                width: 350%;
+                height: 350%;
+            }
+            .controls {
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                margin-left: 50%;
+                transform: translate(10%, 80%);
+            }
+            .sap {
+                z-index: 0;
+                display: block;
+                width: 65%;
+                transform: translate(0%, 225%);
+            }
+        }
+        
+        @media only screen and (max-width:310px) {
+            body {
+                background-image: url('wp240970565.jpg');
+            }
+            h1 {
+                font-size: 180%;
+                margin-left: 30%;
+                transform: translate(-20%);
+            }
+            canvas {
+                z-index: 1;
+                width: 90%;
+                height: 50%;
+                margin-left: 50%;
+                transform: translate(-50%);
+            }
+            #svg {
+                z-index: 2;
+                width: 400%;
+                height: 400%;
+            }
+            .controls {
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                margin-left: 50%;
+                transform: translate(15%, 130%);
+            }
+            .sap {
+                z-index: 0;
+                display: block;
+                width: 105%;
+                transform: translate(0%, 200%);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Snake Game</h1>
+    <canvas width="550" height="550" id="canvas"></canvas>
+    <img src="wp2409705215.jpg" alt="" class="sap">
+    <div class="controls">
+        <div id="joystick" style="width:20%">
+            <svg width="300%" height="300%" viewBox="0 0 100 100" id="svg">
+              <defs>
+                <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:rgb(16,16,16);stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:rgb(240,240,240);stop-opacity:1" />
+                </linearGradient>
+                <linearGradient id="grad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:rgb(240,240,240);stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:rgb(16,16,16);stop-opacity:1" />
+                </linearGradient>
+                <linearGradient id="grad3" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color:rgb(168,168,168);stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:rgb(239,239,239);stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="50" fill="url(#grad1)" />
+              <circle cx="50" cy="50" r="47" fill="url(#grad2)" stroke="black" stroke-width="1.5px" />
+              <circle cx="50" cy="50" r="44" fill="url(#grad3)" />
+
+              <defs>
+                <pattern id="image" patternUnits="userSpaceOnUse" height="35" width="35">
+                  <image x="0" y="0" height="30" width="30" xlink:href="8473.png"></image>
+                </pattern>
+              </defs>
+              
+              <circle cx="50" cy="50" r="15" fill="url(#image)"  stroke="green"  stroke-width="1px" onClick="window.location.reload();" class="replay"/>
+              <path d="M50,14 54,22 46,22Z" fill="rgba(0,0,0,0.8)" onclick="moveUp()" id="up" class="up"/>
+              <path d="M50,86 54,78 46,78Z" fill="rgba(0,0,0,0.8)" onclick="moveDown()" class="down"/>
+              <path d="M14,50 22,54 22,46Z" fill="rgba(0,0,0,0.8)" onclick="moveLeft()" class="left"/>
+              <path d="M86,50 78,54 78,46Z" fill="rgba(0,0,0,0.8)" onclick="moveRight()" class="right"/>
+            </svg>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>
