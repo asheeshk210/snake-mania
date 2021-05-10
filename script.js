@@ -207,5 +207,5 @@ function loop(){
     ctx.drawImage(ground,0,0,550,550,0,0,550,550);
     draw();
 }
-let game = setInterval(loop ,100);
+let game = setInterval(loop ,300);
 
